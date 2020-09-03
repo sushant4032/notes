@@ -1,0 +1,11 @@
+# inline felx is useful when an element to be made flex container but behave as an inline element.
+# flex-direction: row-reverse & column-reverse
+
+# flex-warp:wrap to container and flex:200px to items sets minimum width of items as 200px. Items can grow to fill the container. It is however totally different from setting minimum-width.
+
+# Shorthand for flex-direction and flex-wrap; flex-flow:row wrap;
+
+# Flexible sizing (to the items); flex: 1 200px;
+
+# flex is actually a shorthand for flex-grow, flex-shirnk and flex-basis. Flex grow and shrink are unitless however flex-basis is with units like px etc.
+
