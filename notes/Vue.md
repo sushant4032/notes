@@ -1,7 +1,7 @@
 ---
 title: Vue
 created: '2020-12-13T03:44:14.835Z'
-modified: '2020-12-17T06:55:30.234Z'
+modified: '2021-01-05T10:15:54.541Z'
 ---
 
 # Vue
@@ -308,28 +308,114 @@ This behaviour can cause strange bugs like unwanted removal of input box content
 ## Vue cli
 ```
 npm install -g @vue/cli
-vue create vue-app
+vue create vue-first-app
 
-cd vue-app
+cd vue-first-app
 npm run serve
+```
+No need to run `npm install` with this method as vue cli automatically does that. `npm install` is required for shared project.
+
+## Createing a vue cli app
+- Open powershell form context menu, git bash has issue in navigation
+- `vue create vue-first`
+- select vue 3, it will take some time to complete.
+- Now open vscode inside first-app
+- In vscode terminal run `npm run serve`
+- Navigate to `localhost:8080`
+- Three important parts of vue app, all are inside `src` folder
+  - main.js file
+  - App.vue file
+  - components folder
+- App.vue is like the SPA
+- main.js imports App.vue and creates the main vue component called app.
+- Before mounting the app to public/index.html it is important to get all components registered to the app.
+- Components are defined inside compnents folder and have .vue extension.
+- Compnents are registered to the app in main.js file by importing them relatively and then by calling app.component('name', obj)
+```javascript
+import { createApp } from 'vue'
+import App from './App.vue'
+import friendComp from './components/friendComp.vue'
+
+const app = createApp(App)
+app.component('friend-comp', friendComp);
+app.mount('#app')
+```
+- Seems like there is another way of registering components, in which components are imported inside App.vue and components are defined inside app obj. This approach is used in defalut App.vue created by vue-cli
+- Looks like there is another twist to the story, above steps is automatically doen by vue-cli. Importing and registering component in main.js seems like not required at all.
+
+## parent -> child communication
+Parent can pass data  to child component by binding values to props of child. Key prop is mandatory. Props inside child can be defined inside an arrar called props, but props can also be defined inside props object, in which it is also possible to define type, required, defalut, validator etc.
+in HTML, kebap-case can be used for prop names, same props can be accessed in child JS with camelCase.
+
+Props value passed to the child is immutable. 
+
+Communication through props is one way, parent to child component.
+
+## child - > parent communication
+props passed to child are immutable. Props if required to be changed, should be communicated to parent.
+`$emit()` from inside child will pass an event to the parent. This event can be listened by parent and implemented. 
+```javascript  
+// child js
+changeSomething(){
+  this.$emit('change-something', this.id)  
+}
+```
+```html
+// parent html
+  <custom-component
+    @change-something="changeSomething"
+  ></coustom-component>
+```
+
+```javascript
+// parent js
+methods:{
+  changeSomething(id){}
+}
+
+```
+for emit events, kebab case is used everywhere.
+In the parent this passed on id can be used to identify the dataset and make necessary mutations.
+
+Since emits are counterpat of props, like props emits can also be defined as an object.  There validation logic can also be defined as below. However this is only listing. Passing on evets through a method is still required.
+``` javascript
+props:{},
+emits:{
+  'event-1':function(id){
+    if(!id){
+        console.log('Missing id')
+    }
+  }
+}
+```
+
+
+# Vue fire 
+## refs
+A way of keeping template element references in view
+```html
+<input ref="inp1">
+```
+```javascript
+handler(){
+  this.$refs.inp1.classList.add('active');
+  this.$refs.inp1.focus();
+  // All normal javascript can be used on this now.
+}
 ```
 
 
 
 
 
+# Vue notes 2
 
+## v-model input type behaviour
 
-
-
-
-
-
-
-
-
-
-
+This will force the value stored in variable to be of type number.
+```javascript
+<input type="__anyting__"  v-model.number="myVar"/>
+```
 
 
 
